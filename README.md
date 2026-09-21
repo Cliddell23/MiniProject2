@@ -1,6 +1,6 @@
 # MP2 OSS Activity Analysis
 
-### Overall research objective: Study commit patterns over time for   10 scientific software projects.
+### Overall research objective: Study commit patterns over time for scientific software projects.
 
 
 # Work schedule
@@ -21,7 +21,7 @@ and reasons for restarted contributions (if any)
 - More info on obtaining the data from WoC: [API Docs](https://worldofcode.org/docs/#/guide_remote?id=task-4-batching)
   
 
-### Notes
+### Notes & Tips
 - what kind of source is worldofcode.org?
 - pay attention to how many commits you are getting, check for
 errors
@@ -34,15 +34,14 @@ later commits on GH
 # Part 1 Steps
 
 1. Fork fdac25/MP2
-2. Create retrieval notebook copy (rename to yournetid.ipynb)
-3. Edit/run your copy using google collab notebooks and save the
-output in your fork
-4. For each of the 10 projects go to their GitHub repo and get
-   the number of stars, number of forks, and the last commit date
-5. Report (in your notebook) the number of commits, the number of authors, and max and
-min time for each project based on WoC commits and also add the info
-you obtained from GitHub
-6. Create a CSV file in your fork named netid_project_summary.csv
+1. Create retrieval notebook copy (rename to yournetid.ipynb)
+1. Edit/run your copy using hydra machines or google collab notebooks and save the
+output to your forked repository
+1. For each of the projects assigned to you, use your assigned projects' respective Github Repositories to report the following information in a text cell of your notebook:
+    - [number of stars, number of forks, last commit date]
+1. For each of the projects assigned to you, use the python WoC api to report the following information in a text cell of your notebook:
+    - [number of commits, number of authors, max time, min time] 
+1. Create a CSV file in your fork named netid_project_summary.csv
 that is semicolon separated and containing the following columns:
 ```
 project_wocid
@@ -52,57 +51,56 @@ time
 commit message
 ```
 
-### Extra credit: obtain the same data (in addition to WoC data) on each commit from GitHub and store in netid_project_summary_gh.csv
-
 # Part 2 steps: data visualization
 
 Visualize the commit timestamps you obtain in Task 1. Steps:
 
-1. Group activity by month. Each row should represent one month, with the number of commits made during that month.
-2. Even if a month had zero commits, still include it with a 0
+1. From your netid_project_summary.csv generated in Part 1, Group activity by month. Each row should represent one month, with the number of commits made during that month.
+    - Even if a month had zero commits, still include it with a 0
 count.
-3. Begin with the first month in which the project had any commit.
-4. End with the last month in which the project had a commit.
-5. Save this as:  Filename: netid_commits_timeseries_<WOCProjectID>.csv
-```
-Columns/Format: Month;Commits
-Example rows:
-2021-01;5
-2021-02;0
-2021-03;2
-```
-6. Create a line plot of the time series in Python. The plot should use the monthly data you just generated.
-```
-Plot Format:
-X-axis = months (YYYY-MM)
-Y-axis = number of commits
-Title = WOCProjectID
-Add axis labels and grid lines
-Save the plot as: netid_timeseries_<WOCProjectID>.png
-Export resolution: ≥300 DPI
-```
-Example code:
-```
-import pandas as pd
-import matplotlib.pyplot as plt
+    - Begin with the first month in which the project had any commit.
+    - End with the last month in which the project had a commit.
+    - Your csv should have 2 columns with the following headers: [Month, #Commits]
+1. Save this as:  Filename: netid_commits_timeseries_<WOCProjectID>.csv
+   ```
+   Columns/Format: Month;#Commits
+   Example rows:
+   2021-01;5
+   2021-02;0
+   2021-03;2
+   ```
+1. Create a line plot of the time series in Python. The plot should use the monthly data you just generated.
+   ```
+   Plot Format:
+   X-axis = months (YYYY-MM)
+   Y-axis = number of commits
+   Title = WOCProjectID
+   Add axis labels and grid lines
+   Save the plot as: netid_timeseries_<WOCProjectID>.png
+   Export resolution: ≥300 DPI
+   ```
+- Example code:
+   ```
+   import pandas as pd
+   import matplotlib.pyplot as plt
 
-# Load CSV
-df = pd.read_csv("netid_commits_timeseries.csv", sep=";")
+   # Load CSV
+   df = pd.read_csv("netid_commits_timeseries.csv", sep=";")
 
-# Plot
-plt.figure(figsize=(10,5))
-plt.plot(df["Month"], df["Commits"], marker="o", linestyle="-")
-plt.xlabel("Time (YYYY-MM)")
-plt.ylabel("Number of Commits")
-plt.title("Commit Activity: <WOCProjectID>")
-plt.grid(True)
-plt.xticks(rotation=45)
-plt.tight_layout()
+   # Plot
+   plt.figure(figsize=(10,5))
+   plt.plot(df["Month"], df["#Commits"], marker="o", linestyle="-")
+   plt.xlabel("Time (YYYY-MM)")
+   plt.ylabel("Number of Commits")
+   plt.title("Commit Activity: <WOCProjectID>")
+   plt.grid(True)
+   plt.xticks(rotation=45)
+   plt.tight_layout()
 
-# Save; Resolution 300 DPI
-plt.savefig("netid_timeseries_<WOCProjectID>.png", dpi=300)
-plt.close()
-```
+   # Save; Resolution 300 DPI
+   plt.savefig("netid_timeseries_<WOCProjectID>.png", dpi=300)
+   plt.close()
+   ```
 
 
 ##### Identify the Longest Inactivity Gap
@@ -111,36 +109,28 @@ To calculate:
 1. Start in the first month with zero commits.
 2. Count consecutive zero-commit months.
 3. Track the maximum length.
-4. Create netid_project_stats.csv with columns project, the number of commits, the number of authors, and max and
-min time for each project based on WoC commits and also add the info
-you obtained from GitHub. In addition, add
-```
-LongestGapStart (YYYY-MM), 
-LongestGapEnd (YYYY-MM),
-LongestGapLength (months).
-```
-5. Count total commits to date after the LongestGapEnd. Add another
-column to netid_project_stats.csv: NumCommitsAfterLastGap
-6. In NumberOfGapsInTimeline specify the number of gaps (of at least three months of inactivity) are there for each project.
-7. Provide a concise classification of the project’s overall
-   activity trajectory based on the charts you have produced your overall perception. Record this
-   in netid_project_stats.csv: ActivityPattern (choose from:
-   steady, rising, declining, U-shaped, stopped, cyclical, irregular). 
-8. In the notebook, in the cell "Interpretation", add explanation for the trends you
-   noted. See the definitions below. Also specify the number of gaps
-   (of at least three months of inactivity) are there for each project.
+4. Create netid_project_stats.csv with the following columns:
+    - [project, number of commits, number of authors, max time,
+min time] 
+    - Also add the info you obtained from GitHub: [number of stars, number of forks, last commit date]. 
+    - add
+      ```
+      LongestGapStart (YYYY-MM), 
+      LongestGapEnd (YYYY-MM),
+      LongestGapLength (months).
+      ```
+5. Add a [NumCommitsAfterLastGap] column containing the total commits to date after the LongestGapEnd. for the respective projects.
+6. Add a [NumberOfGapsInTimeline] column containing the number of gaps (of at least three months of inactivity) there are there for each project.
+7. Add a [ActivityPattern] column containing a classification of the project’s overall activity trajectory based on the charts you have produced your overall perception. Possible classifications to choose include: 
+   - [steady, rising, declining, U-shaped, cyclical, irregular. ]
+8. In the notebook, add a cell named "Interpretation" and add an explanation for the trends you noted. See the definitions below. Also specify the number of gaps (of at least three months of inactivity) are there for each project.
 
-Trends: steady, declining, rising, U-shaped: Long-term, general
-movements in activity levels. An upward trend might indicate that a
-person is becoming more active over several months, while a downward
-trend could signal a decrease in mobility.
+   Trends:
+    - steady, rising, declining, U-shaped: Long-term, general movements in activity levels. An upward trend might indicate that a person is becoming more active over several months, while a downward trend could signal a decrease in mobility.
 
-Seasonal/Cyclical patterns: Predictable and repeated patterns of activity
-that occur at fixed intervals, such as quarterly or
-annually. 
+    - Seasonal/Cyclical patterns: Predictable and repeated patterns of activity that occur at fixed intervals, such as quarterly or annually. 
 
-Irregular or random variations: Unpredictable changes in activity
-that cannot be explained by trends or seasonal patterns.
+    - Irregular or random variations: Unpredictable changes in activity that cannot be explained by trends or seasonal patterns.
 
 [Example Notebook](https://github.com/fdac25/MP2/blob/main/Vis.ipynb)
 
