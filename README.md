@@ -4,13 +4,13 @@
 
 
 # Work schedule
-- Part 1: (Due Oct 9) Retrieve all commits and associated data for
+- Part 1: (Due Oct 1st) Retrieve all commits and associated data for
 each of the 10 projects
-- Part 2: (Due Oct 16) Plot (and describe) commit trends over time for each project
-- Part 3: (Due Oct 23)  Investigate trends for large gaps, discontinued
+- Part 2: (Due Oct 8th) Plot (and describe) commit trends over time for each project
+- Part 3: (Due Oct 15th)  Investigate trends for large gaps, discontinued
 contributions, and other anomalies and report topics of commits
 before and after the gap
-- Part 4: (Due  Oct 30) Based on all available evidence make a
+- Part 4: (Due  Oct 22nd) Based on all available evidence make a
 judgment about the reasons for the gap or discontinued contribution
 and reasons for restarted contributions (if any)
 - If you run requests in a loop, make sure the chunks are under 50
